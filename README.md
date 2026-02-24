@@ -36,11 +36,19 @@ Modern software development and AI training require **massive amounts of data**.
 
 ---
 
-## 🚀 Quick Start (No Installation Required!)
+## 🚀 Quick Start (Local Setup)
 
-You don't even need to install it. If you have Node installed, just run the Interactive Wizard directly:
+To use SentiSynth locally, simply clone the repository, install the dependencies, and run the Interactive Wizard!
 
 ```bash
+# 1. Clone the repository
+git clone https://github.com/YourUsername/SentiSynth-CLI.git
+cd SentiSynth-CLI
+
+# 2. Install dependencies (Required!)
+npm install
+
+# 3. Launch the Interactive Wizard
 npx tsx src/cli.ts create
 ```
 

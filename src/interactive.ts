@@ -85,7 +85,7 @@ export async function runInteractiveWizard(): Promise<SentiSynthConfig | null> {
         {
             type: 'list',
             name: 'mode',
-            message: 'What kind of fake data do you want to create?',
+            message: 'What kind of synthetic data do you want to create?',
             choices: [
                 { name: '🚀 Quick Start: Online Store (Users + Orders)', value: 'ecommerce' },
                 { name: '📱 Quick Start: Social App (Users + Posts)', value: 'social' },
