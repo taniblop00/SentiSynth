@@ -4,6 +4,7 @@ import { SentiSynthConfig } from './parser.js';
 import { resolveDependencies } from './dependency-graph.js';
 import { generateValue, registerColumnData } from '../generators/type-inference.js';
 import { createProgressBar, renderSummaryTable, SummaryRow } from '../ui/index.js';
+import { setFakerLanguage } from '../faker-instance.js';
 
 export type OutputFormat = 'json' | 'jsonl' | 'csv' | 'sql';
 
@@ -11,11 +12,13 @@ export interface EngineOptions {
     config: SentiSynthConfig;
     outputDir: string;
     format: OutputFormat;
+    language?: string;
 }
 
 export async function generateData(options: EngineOptions) {
-    const { config, outputDir, format } = options;
+    const { config, outputDir, format, language = 'en' } = options;
     const startMs = Date.now();
+    setFakerLanguage(language);
 
     // Ensure output directory exists
     await fs.promises.mkdir(outputDir, { recursive: true });
@@ -74,7 +77,7 @@ export async function generateData(options: EngineOptions) {
             for (const fieldName of Object.keys(fields)) {
                 const fieldDef = fields[fieldName];
                 const fieldType = typeof fieldDef === 'string' ? fieldDef : fieldDef.type;
-                const value = generateValue(fieldName, fieldType, i, config);
+                const value = await generateValue(fieldName, fieldType, i, config);
                 rowData[fieldName] = value;
 
                 // Only cache 'id' for ref(...) usage. Assuming ID is the primary key.

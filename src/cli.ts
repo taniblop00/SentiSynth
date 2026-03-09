@@ -50,6 +50,7 @@ program
     .description('Launch the interactive SentiSynth wizard to generate data without a config file')
     .option('-o, --output-dir <dir>', 'Output directory for generated files', './out')
     .option('-f, --format <format>', 'Output format: json, jsonl, csv, or sql', 'json')
+    .option('-l, --language <lang>', 'Faker locale language (e.g., en, he, fr, es)', 'en')
     .action(async (options) => {
         while (true) {
             try {
@@ -74,7 +75,8 @@ program
                 await generateData({
                     config,
                     outputDir: outPath,
-                    format
+                    format,
+                    language: options.language
                 });
 
                 const absPath = path.resolve(outPath);
@@ -99,6 +101,7 @@ program
     .requiredOption('-c, --config <path>', 'Path to the schema config file (.yaml or .json)')
     .option('-o, --output-dir <dir>', 'Output directory for generated files', './out')
     .option('-f, --format <format>', 'Output format: json, jsonl, csv, or sql', 'json')
+    .option('-l, --language <lang>', 'Faker locale language (e.g., en, he, fr, es)', 'en')
     .action(async (options) => {
         try {
             renderHeader();
@@ -150,7 +153,8 @@ program
             await generateData({
                 config,
                 outputDir: outPath,
-                format
+                format,
+                language: options.language
             });
 
             const absPath = path.resolve(outPath);

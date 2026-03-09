@@ -1,4 +1,5 @@
-import { faker } from '@faker-js/faker';
+import { faker, getCurrentLanguage } from '../faker-instance.js';
+import { fetchWikipediaSummary } from './wikipedia.js';
 import { generateDynamicQA, QAPair } from './qa-data.js';
 import { SentiSynthConfig } from '../core/parser.js';
 
@@ -100,7 +101,7 @@ export function executeFakerMethod(methodPath: string): any {
  * Top level generator resolver
  * Resolves standard types, explicitly named faker types, inferred fields, and refs
  */
-export function generateValue(fieldName: string, fieldTypeStr?: string | null, rowIndex: number = 0, config?: SentiSynthConfig): any {
+export async function generateValue(fieldName: string, fieldTypeStr?: string | null, rowIndex: number = 0, config?: SentiSynthConfig): Promise<any> {
     // If no type string is provided, use smart inference based on the field name
     if (fieldTypeStr == null || fieldTypeStr === '') {
         const inferredMethod = inferFakerMethod(fieldName);
@@ -136,6 +137,10 @@ export function generateValue(fieldName: string, fieldTypeStr?: string | null, r
         case 'llm_answer': {
             const pair = getQAPairForRow(rowIndex, config?.llmCategories);
             return pair.answer;
+        }
+        case 'wikipedia':
+        case 'wikipedia.summary': {
+            return await fetchWikipediaSummary(getCurrentLanguage());
         }
     }
 

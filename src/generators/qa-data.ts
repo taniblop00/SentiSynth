@@ -1,4 +1,5 @@
-import { faker } from '@faker-js/faker';
+import { faker } from '../faker-instance.js';
+import { techJargon, medicalTerms, businessStrategies, historicalEvents } from './dictionaries.js';
 
 export interface QAPair {
     system_prompt?: string;
@@ -36,11 +37,15 @@ const qaTemplates: Record<string, QAGenerator[]> = {
         })
     ],
     software_eng: [
-        () => ({
-            system_prompt: "You are a Senior Technical Lead explaining software architecture to a Junior Developer.",
-            question: `What are the benefits of using a ${faker.hacker.adjective()} architecture for our new ${faker.company.catchPhrase()} application?`,
-            answer: `A ${faker.hacker.adjective()} architecture significantly improves modularity. It prevents tight coupling when we need to ${faker.hacker.verb()} external APIs. Furthermore, since we process heavy ${faker.hacker.noun()} data, this design allows independent scaling of the ${faker.company.buzzNoun()} services without bottlenecking the main thread.`
-        })
+        () => {
+            const topic = faker.helpers.arrayElement(techJargon);
+            const topic2 = faker.helpers.arrayElement(techJargon);
+            return {
+                system_prompt: "You are a Senior Technical Lead explaining software architecture to a Junior Developer.",
+                question: `What are the benefits of using ${topic} for our new ${faker.company.catchPhrase()} application?`,
+                answer: `Adopting ${topic} significantly improves modularity. It prevents tight coupling when we need to interact with external APIs. Furthermore, considering our reliance on ${topic2}, this design allows independent scaling without bottlenecking the main thread.`
+            };
+        }
     ],
     science: [
         () => ({
@@ -57,18 +62,24 @@ const qaTemplates: Record<string, QAGenerator[]> = {
         })
     ],
     history: [
-        () => ({
-            system_prompt: "You are a Professor of Global History and Geography.",
-            question: `What were the geographic factors that led to the economic rise of ${faker.location.city()} in ${faker.location.country()}?`,
-            answer: `The rise of ${faker.location.city()} was largely dictated by its proximity to the ${faker.location.street()} river basin. This ${faker.word.adjective()} location provided a natural defense and made it a central hub for trading ${faker.commerce.product()}s. Over the centuries, this strategic advantage cemented its global influence.`
-        })
+        () => {
+            const event = faker.helpers.arrayElement(historicalEvents);
+            return {
+                system_prompt: "You are a Professor of Global History and Geography.",
+                question: `What were the key factors that led to ${event}?`,
+                answer: `${event} was largely dictated by shifting geopolitical dynamics and long-standing tensions. Over time, these strategic changes cemented a global impact that shaped the modern era.`
+            };
+        }
     ],
     business: [
-        () => ({
-            system_prompt: "You are an elite Wall Street Financial Analyst.",
-            question: `Why did ${faker.company.name()} decide to pivot to ${faker.commerce.department()} last quarter?`,
-            answer: `${faker.company.name()} identified a massive gap in the ${faker.commerce.department()} market. By leveraging ${faker.company.buzzAdjective()} ${faker.company.buzzNoun()}, they aim to increase their ${faker.finance.transactionType()} efficiency. This aggressive pivot is expected to yield a ${faker.number.int({ min: 15, max: 300 })}% ROI by Q4.`
-        })
+        () => {
+            const strategy = faker.helpers.arrayElement(businessStrategies);
+            return {
+                system_prompt: "You are an elite Wall Street Financial Analyst.",
+                question: `Why did ${faker.company.name()} decide to focus heavily on ${strategy} last quarter?`,
+                answer: `${faker.company.name()} identified a massive market gap to deploy ${strategy}. By leveraging their latest ${faker.company.buzzNoun()}, they aim to increase operational efficiency. This pivot is expected to yield a ${faker.number.int({ min: 15, max: 300 })}% ROI by Q4.`
+            };
+        }
     ],
     ecommerce: [
         () => ({
@@ -113,11 +124,14 @@ const qaTemplates: Record<string, QAGenerator[]> = {
         })
     ],
     health: [
-        () => ({
-            system_prompt: "You are a certified Dietitian and personal trainer to professional athletes.",
-            question: `Does a ${faker.word.adjective()} diet really improve cardiovascular endurance?`,
-            answer: `Absolutely. A ${faker.word.adjective()} diet is heavily linked to reducing systemic inflammation. By focusing on whole foods rather than processed ${faker.commerce.productMaterial()} substitutes, the body manages oxygen synthesis much better during heavy exertion, drastically improving overall V02 max over time.`
-        })
+        () => {
+            const condition = faker.helpers.arrayElement(medicalTerms);
+            return {
+                system_prompt: "You are a certified healthcare researcher and clinician.",
+                question: `What are the primary risk factors for evaluating ${condition}?`,
+                answer: `The primary risk factors for ${condition} include genetic predisposition, systemic inflammation, and environmental stress. Targeted therapies and early diagnosis can significantly manage the progression of the disease.`
+            };
+        }
     ],
     culinary: [
         () => ({

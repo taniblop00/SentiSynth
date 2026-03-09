@@ -30,7 +30,9 @@ Modern software development and AI training require **massive amounts of data**.
 ### Why you'll love it:
 - ⚡ **Lightning Fast:** Generates millions of rows using highly-optimized Node streams without crashing your memory.
 - 🎯 **Relational Intelligence:** Understands Topographical Dependency Graphs (`ref(users.id)`), ensuring parent tables are generated before child tables seamlessly.
-- 🤖 **LLM Native:** Built-in infinite, high-quality Q&A dataset generators for fine-tuning your own models across 20+ topics (Science, History, Coding, General Trivia, etc).
+- 🌍 **Multi-Language Support:** Generate data in 10+ languages (Hebrew, French, Chinese, Arabic, Japanese, Spanish, etc.) using the `-l` CLI flag.
+- 📚 **Wikipedia Integration:** Use `wikipedia.summary` to asynchronously fetch huge volumes of random real-world articles straight through the native Wikipedia REST API into your records.
+- 🤖 **LLM Native:** Built-in infinite, high-quality Q&A dataset generators for fine-tuning your own models across 20+ topics (Science, History, Coding, General Trivia, etc) backed by massive dictionaries.
 - 🛠️ **Two Modes of Power:** Use the **Interactive Wizard** for a guided UI experience, or build robust `config.yaml` schemas for CI/CD automation.
 - 💅 **Beautiful Developer Experience:** High-refresh CLI progress bars, elegant error handling, and robust Zod validation.
 
@@ -86,10 +88,11 @@ orders:
 
 ### Generate the Data:
 ```bash
-npx tsx src/cli.ts generate -c config.yaml -f sql -o ./output
+npx tsx src/cli.ts generate -c config.yaml -f sql -l he -o ./output
 ```
 
 **Formats supported:** `-f json`, `-f jsonl`, `-f csv`, `-f sql`
+**Languages supported:** `-l en` (English), `-l he` (Hebrew), `-l fr` (French), `-l zh` (Chinese), `-l it` (Italian), `-l de` (German), `-l ja` (Japanese), `-l ar` (Arabic), `-l es` (Spanish)
 
 ---
 
@@ -107,6 +110,7 @@ training_data:
     system_prompt: llm_system_prompt
     user_question: llm_question
     ai_answer: llm_answer
+    topic_summary: wikipedia.summary # Asynchronously fetches a random Wikipedia summary in your selected language!
 ```
 
 When you generate this, SentiSynth will utilize a dynamic template engine pumping out highly diverse, context-aware instruct-tuning data ranging from advanced `Software Engineering`, `Cyber Security` and `Aerospace`, to `Everyday Geography` and `Cooking`. Output to `.jsonl` directly for HuggingFace compatibility.
